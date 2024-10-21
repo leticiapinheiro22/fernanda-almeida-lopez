@@ -14,7 +14,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
+
+        /* Estilo da barra de pesquisa */
         .search-container {
             margin-top: 20px;
         }
@@ -33,12 +36,8 @@
         .search-box::placeholder {
             color: #888;
         }
-        .search-icon {
-            position: absolute;
-            margin-left: -30px;
-            color: #888;
-            font-size: 20px;
-        }
+
+        /* Estilo da grade de filmes */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -74,7 +73,7 @@
 
         /* Estilo da modal */
         .modal {
-            display: none; /* Escondido por padrão */
+            display: none;
             position: fixed;
             z-index: 1;
             left: 0;
@@ -106,29 +105,64 @@
             text-decoration: none;
             cursor: pointer;
         }
-        input {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            border: none;
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            border: none;
+
+        /* Estilo do botão flutuante */
+        .floating-btn {
+            position: fixed;
+            top: 20px;
+            left: 95%;
             background-color: #f39c12;
-            color: #fff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Estilo do menu lateral */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Inicialmente fora da tela */
+            width: 250px;
+            height: 100%;
+            background-color: #444;
+            box-shadow: 4px 0 6px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            padding: 20px;
+            color: white;
+        }
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+        .side-menu ul li {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .side-menu ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .side-menu ul li a:hover {
+            color: #f39c12;
+        }
+
+        /* Botão para fechar o menu lateral */
+        .side-menu .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
             cursor: pointer;
         }
-        .register-link {
-            color: #f39c12;
-            cursor: pointer;
-            text-decoration: underline;
-            display: block;
-            margin-top: 10px;
+
+        /* Faz o botão de fechar desaparecer quando o menu está fechado */
+        .side-menu.closed .close-menu {
+            display: none;
         }
     </style>
 </head>
@@ -142,6 +176,20 @@
                 Seu navegador não suporta o elemento de vídeo.
             </video>
         </div>
+    </div>
+
+    <!-- Botão flutuante de configuração -->
+    <button class="floating-btn" onclick="toggleMenu()">⚙️</button>
+
+    <!-- Menu Lateral -->
+    <div id="sideMenu" class="side-menu closed">
+        <span class="close-menu" onclick="toggleMenu()">×</span>
+        <ul>
+            <li><a href="perfil.php">Perfil</a></li>
+            <li><a href="painel.php">Painel</a></li>
+            <li><a href="cadastro_usuario.php">Cadastro de usuario</a></li>
+            <li><a href="#">Sair</a></li>
+        </ul>
     </div>
 
     <div class="search-container">
@@ -211,22 +259,29 @@
             document.getElementById(modalId).style.display = "block";
         }
 
-
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
 
-        // Fecha a modal ao clicar fora dela
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const currentLeft = menu.style.left;
+            const closed = menu.classList.contains('closed');
+            if (closed) {
+                menu.style.left = '0';
+                menu.classList.remove('closed');
+            } else {
+                menu.style.left = '-250px';
+                menu.classList.add('closed');
+            }
+        }
+
         window.onclick = function(event) {
             const loginModal = document.getElementById('loginModal');
-            const registerModal = document.getElementById('registerModal');
             if (event.target === loginModal) {
                 closeModal('loginModal');
             }
-            if (event.target === registerModal) {
-                closeModal('registerModal');
-            }
-        }      
+        };
     </script>
 </body>
 </html>
